@@ -1,6 +1,7 @@
 
 **/.terraform/*
 **/*.hcl
+**/*.tfstate
 
 ### VisualStudioCode ###
 .vscode/*
