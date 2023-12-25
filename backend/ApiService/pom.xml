@@ -19,10 +19,19 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-storage-blob</artifactId>
+			<version>12.10.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.store</groupId>
+			<artifactId>afs-azure-storage</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- Other dependencies -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -114,13 +123,34 @@
 						</indent>
 					</pom>
 				</configuration>
-				<!-- Use the latest version -->
 				<executions>
 					<execution>
 						<goals>
 							<goal>apply</goal>
 						</goals>
 						<phase>validate</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>generate-storage-account-key-file</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<executable>powershell</executable>
+							<arguments>
+								<argument>${project.basedir}\..\..\scripts\output-sas-key.ps1</argument>
+								<argument>-Path</argument>
+								<argument>${project.build.outputDirectory}</argument>
+							</arguments>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
